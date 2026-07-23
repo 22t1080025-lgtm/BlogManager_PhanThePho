@@ -95,3 +95,4 @@ D:\HUSC\Web\BlogManager_PhanThePho\obj\Debug\net10.0\refint\BlogManager_PhanTheP
 D:\HUSC\Web\BlogManager_PhanThePho\obj\Debug\net10.0\BlogManager_PhanThePho.pdb
 D:\HUSC\Web\BlogManager_PhanThePho\obj\Debug\net10.0\BlogManager_PhanThePho.genruntimeconfig.cache
 D:\HUSC\Web\BlogManager_PhanThePho\obj\Debug\net10.0\ref\BlogManager_PhanThePho.dll
+D:\HUSC\Web\BlogManager_PhanThePho\obj\Debug\net10.0\BlogManager_PhanThePho.sourcelink.json

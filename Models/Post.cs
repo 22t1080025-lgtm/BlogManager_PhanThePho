@@ -12,6 +12,10 @@ public class Post
 
     public bool IsPublished { get; set; }
 
+    // Bổ sung 2 thuộc tính theo đề bài:
+    public string Author { get; set; } = string.Empty;
+    public int ViewCount { get; set; }
+
     public string MoTaNgan() => $"{Title} ({PublishedAt:dd/MM/yyyy})";
     
 }
