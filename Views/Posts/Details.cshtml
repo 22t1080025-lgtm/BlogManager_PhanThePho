@@ -1,0 +1,24 @@
+@using Blogmanager_PhanThePho.Models
+@model Posts
+
+<h1>@Model.Title</h1>
+
+<p><strong>Tác giả:</strong> @Model.Author</p>
+
+<p><strong>Ngày đăng:</strong> @Model.PublishedAt.ToString("dd/MM/yyyy")</p>
+
+<p><strong>Trạng thái:</strong>
+    @(Model.IsPublished ? "Đã xuất bản" : "Nháp")
+</p>
+
+<hr>
+
+<h4>Nội dung</h4>
+
+<p>@Model.Content</p>
+
+<a asp-controller="Posts"
+   asp-action="Index"
+   class="btn btn-secondary">
+    Quay lại
+</a>
