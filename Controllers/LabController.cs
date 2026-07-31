@@ -1,7 +1,7 @@
-using Blogmanager_PhanThePho.Models;
+using BlogManager_PhanThePho.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Blogmanager_PhanThePho.Controllers;
+namespace BlogManager_PhanThePho.Controllers;
 
 public class LabController : Controller
 {

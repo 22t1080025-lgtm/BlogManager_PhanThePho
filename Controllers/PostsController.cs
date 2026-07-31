@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Blogmanager_PhanThePho.Models;
+using BlogManager_PhanThePho.Models;
 
 public class PostsController : Controller
 {

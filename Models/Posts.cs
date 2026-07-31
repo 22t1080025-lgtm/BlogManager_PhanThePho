@@ -1,4 +1,4 @@
-namespace Blogmanager_PhanThePho.Models;
+namespace BlogManager_PhanThePho.Models;
 
 public class Posts
 {
