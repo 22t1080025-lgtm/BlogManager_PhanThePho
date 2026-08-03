@@ -1,49 +1,46 @@
 @model BlogManager_PhanThePho.Models.Post
 
 @{
-    ViewData["Title"] = "Thêm bài viết mới";
+    ViewData["Title"] = "Chỉnh sửa bài viết";
 }
 
-<h2 class="my-3">Thêm bài viết mới</h2>
+<h2 class="my-3">Chỉnh sửa bài viết</h2>
 <hr />
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Create" method="post">
-            @* Hiển thị tổng hợp các lỗi Validation cấp Model *@
+        <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            @* 1. Trường Title (Tiêu đề) *@
+            <!-- Khóa chính Id ẩn để gửi kèm Form -->
+            <input type="hidden" asp-for="Id" />
+
             <div class="mb-3">
                 <label asp-for="Title" class="form-label font-weight-bold">Tiêu đề</label>
-                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề..." />
+                <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            @* 2. Trường Author (Tác giả) *@
             <div class="mb-3">
                 <label asp-for="Author" class="form-label font-weight-bold">Tác giả</label>
-                <input asp-for="Author" class="form-control" placeholder="Nhập tên tác giả..." />
+                <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
 
-            @* 3. Trường PublishedAt (Ngày đăng) *@
             <div class="mb-3">
                 <label asp-for="PublishedAt" class="form-label font-weight-bold">Ngày đăng</label>
                 <input asp-for="PublishedAt" type="datetime-local" class="form-control" />
                 <span asp-validation-for="PublishedAt" class="text-danger"></span>
             </div>
 
-            @* Nút Submit *@
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary">Lưu bài viết</button>
+                <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
                 <a asp-action="Index" class="btn btn-secondary ms-2">Hủy bỏ</a>
             </div>
         </form>
     </div>
 </div>
 
-@* Bật Validation ở Client-side bằng Partial Script *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

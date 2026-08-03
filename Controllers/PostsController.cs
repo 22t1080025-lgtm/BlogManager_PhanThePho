@@ -47,5 +47,58 @@ public class PostsController : Controller
 
             return RedirectToAction(nameof(Index));
         }
+    // ==================== UPDATE (SỬA) ====================
+
+    // GET: Posts/Edit/5 (Hiển thị form sửa bài viết)
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var post = await _context.Posts.FindAsync(id);
+        if (post == null) return NotFound();
+
+        return View(post);
+    }
+
+    // POST: Posts/Edit/5 (Lưu dữ liệu chỉnh sửa)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Post post)
+    {
+        if (id != post.Id) return NotFound();
+
+        if (!ModelState.IsValid) return View(post);
+
+        _context.Update(post);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ==================== DELETE (XÓA) ====================
+
+    // GET: Posts/Delete/5 (Hiển thị trang xác nhận xóa)
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var post = await _context.Posts.FindAsync(id);
+        if (post == null) return NotFound();
+
+        return View(post);
+    }
+
+    // POST: Posts/Delete/5 (Thực hiện xóa bài viết)
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var post = await _context.Posts.FindAsync(id);
+        if (post != null)
+        {
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
     // Các Action ở đây
 }
