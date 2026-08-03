@@ -1,64 +1,51 @@
 using Microsoft.AspNetCore.Mvc;
 using BlogManager_PhanThePho.Models;
+using BlogManager_PhanThePho.Data;
+using Microsoft.EntityFrameworkCore;
 
 public class PostsController : Controller
 {
-    // Hàm trả về danh sách bài viết
-    private List<Posts> getListPost()
-    {
-        var posts = new List<Posts>
-        {
-            new Posts
-            {
-                Id = 1,
-                Title = "C# cơ bản",
-                Content = "Giới thiệu ngôn ngữ C# và cú pháp cơ bản.",
-                Author = "Nguyễn Văn A",
-                PublishedAt = new DateTime(2024, 5, 5),
-                IsPublished = true
-            },
-            new Posts
-            {
-                Id = 2,
-                Title = "MVC nhập môn",
-                Content = "Làm quen với mô hình MVC trong ASP.NET Core.",
-                Author = "Trần Thị B",
-                PublishedAt = new DateTime(2024, 6, 5),
-                IsPublished = true
-            },
-            new Posts
-            {
-                Id = 3,
-                Title = "EF Core",
-                Content = "Tìm hiểu Entity Framework Core và cách thao tác CSDL.",
-                Author = "Lê Văn C",
-                PublishedAt = new DateTime(2024, 7, 5),
-                IsPublished = false
-            }
-        };
+    private readonly ApplicationDbContext _context;
 
-        return posts;
+    public PostsController(ApplicationDbContext context)
+    {
+        _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var posts = getListPost();
-
-        ViewData["Title"] = "Danh sách bài viết";
-        ViewBag.SoLuong = posts.Count;
+        var posts = await _context.Posts
+            .OrderByDescending(p => p.PublishedAt)
+            .ToListAsync();
 
         return View(posts);
     }
-
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        var posts = getListPost();
+        var post = await _context.Posts.FindAsync(id);
 
-        var baiCanLay = posts.FirstOrDefault(p => p.Id == id);
+        if (post == null)
+            return NotFound();
 
-        if (baiCanLay != null)
-            return View(baiCanLay);
-
-        return NotFound();
+        return View(post);
     }
+    public IActionResult Create()
+        {
+            return View();
+        }
+    [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Post post)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(post);
+            }
+
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+    // Các Action ở đây
 }

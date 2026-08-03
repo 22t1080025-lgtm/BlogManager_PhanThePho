@@ -1,0 +1,46 @@
+@model BlogManager_PhanThePho.Models.Post
+
+@{
+    ViewData["Title"] = "Thêm bài viết mới";
+}
+
+<h2 class="my-3">Thêm bài viết mới</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <!-- Mã thông báo chống tấn công CSRF -->
+            @Html.AntiForgeryToken()
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label font-weight-bold">Tiêu đề</label>
+                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết..." />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Author" class="form-label font-weight-bold">Tác giả</label>
+                <input asp-for="Author" class="form-control" placeholder="Nhập tên tác giả..." />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PublishedAt" class="form-label font-weight-bold">Ngày đăng</label>
+                <input asp-for="PublishedAt" type="datetime-local" class="form-control" />
+                <span asp-validation-for="PublishedAt" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Lưu bài viết</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">Quay lại danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
