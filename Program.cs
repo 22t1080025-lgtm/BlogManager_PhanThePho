@@ -1,33 +1,51 @@
 using Microsoft.EntityFrameworkCore;
-using BlogManager_PhanThePho.Data; // Thay bằng namespace tương ứng với ApplicationDbContext của bạn
+using Microsoft.AspNetCore.Identity; // Thêm namespace này
+using BlogManager_PhanThePho.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//inject vao day
+
+// 1. Cấu hình DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// 2. Đăng ký ASP.NET Core Identity
+builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
+// 3. Thêm Razor Pages (Cần thiết cho giao diện Identity UI mặc định)
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<BlogManager_PhanThePho.Data.ApplicationDbContext>();
-    await BlogManager_PhanThePho.Data.DbSeeder.SeedAsync(context);
+    // Truyền trực tiếp 'services' vào thay vì 'context'
+    await BlogManager_PhanThePho.Data.DbSeeder.SeedAsync(services); 
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
+// 4. Bật Authentication (Xác thực) và Authorization (Phân quyền)
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -37,5 +55,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// 5. Route cho các trang Đăng nhập / Đăng xuất của Identity UI
+app.MapRazorPages();
 
 app.Run();

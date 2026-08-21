@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using BlogManager_PhanThePho.Models;
 using BlogManager_PhanThePho.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogManager_PhanThePho.Controllers;
 
+[Authorize] // Bắt buộc đăng nhập cho toàn bộ Controller
 public class PostsController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -14,21 +16,19 @@ public class PostsController : Controller
         _context = context;
     }
 
-    // GET: Posts (Index có Include, Tìm kiếm, Sắp xếp và Phân trang)
+    // Cho phép tất cả mọi người xem danh sách
+    [AllowAnonymous]
     public async Task<IActionResult> Index(string? search, string? sort, int pageNumber = 1)
     {
         int pageSize = 5;
         
-        // 1. Nạp kèm bảng Category bằng Include
         var query = _context.Posts.Include(p => p.Category).AsQueryable();
 
-        // 2. Lọc theo từ khóa tìm kiếm
         if (!string.IsNullOrWhiteSpace(search))
         {
             query = query.Where(p => p.Title.Contains(search));
         }
 
-        // 3. Sắp xếp danh sách
         query = sort switch
         {
             "title" => query.OrderBy(p => p.Title),
@@ -36,7 +36,6 @@ public class PostsController : Controller
             _ => query.OrderByDescending(p => p.PublishedAt)
         };
 
-        // 4. Tính toán phân trang với Skip & Take
         int totalItems = await query.CountAsync();
         int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
@@ -45,7 +44,6 @@ public class PostsController : Controller
             .Take(pageSize)
             .ToListAsync();
 
-        // 5. Đóng gói vào ViewModel
         var viewModel = new PostListViewModel
         {
             Posts = posts,
@@ -58,7 +56,8 @@ public class PostsController : Controller
         return View(viewModel);
     }
 
-    // GET: Posts/Details/5
+    // Cho phép tất cả mọi người xem chi tiết
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         var post = await _context.Posts
@@ -102,7 +101,6 @@ public class PostsController : Controller
         var post = await _context.Posts.FindAsync(id);
         if (post == null) return NotFound();
 
-        // Thêm dòng này để nạp danh sách chuyên mục vào ViewBag
         ViewBag.Categories = await _context.Categories.ToListAsync();
 
         return View(post);
