@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity; // Thêm namespace này
+using Microsoft.AspNetCore.Identity;
 using BlogManager_PhanThePho.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,8 +22,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// 3. Thêm Razor Pages (Cần thiết cho giao diện Identity UI mặc định)
+// 3. Thêm Razor Pages (Cho Identity UI)
 builder.Services.AddRazorPages();
+
+// 4. Đăng ký Swagger / OpenAPI cho API
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -33,18 +37,24 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+else
+{
+    // Bật Swagger & Swagger UI ở môi trường Development
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
+// 5. Khởi tạo Seed Data (Tạo danh mục + Admin)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    // Truyền trực tiếp 'services' vào thay vì 'context'
     await BlogManager_PhanThePho.Data.DbSeeder.SeedAsync(services); 
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
-// 4. Bật Authentication (Xác thực) và Authorization (Phân quyền)
+// 6. Bật Authentication & Authorization
 app.UseAuthentication(); 
 app.UseAuthorization();
 
@@ -55,7 +65,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-// 5. Route cho các trang Đăng nhập / Đăng xuất của Identity UI
+// 7. Route cho Identity UI
 app.MapRazorPages();
+
+// 8. Ánh xạ các API Controllers (BẮT BUỘC để không bị lỗi API 404)
+app.MapControllers();
 
 app.Run();
