@@ -1,0 +1,29 @@
+@model BlogManager_PhanThePho.Models.Post
+
+@{
+    ViewData["Title"] = "Xóa bài viết";
+}
+
+<h2 class="my-3 text-danger">Xóa bài viết</h2>
+<h4 class="text-secondary">Bạn có chắc chắn muốn xóa bài viết này không?</h4>
+<hr />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Tiêu đề</dt>
+        <dd class="col-sm-9">@Model.Title</dd>
+
+        <dt class="col-sm-3">Tác giả</dt>
+        <dd class="col-sm-9">@Model.Author</dd>
+
+        <dt class="col-sm-3">Ngày đăng</dt>
+        <dd class="col-sm-9">@Model.PublishedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+    
+    <form asp-action="Delete" method="post" class="mt-4">
+        <!-- Khóa chính Id ẩn gửi kèm khi xác nhận xóa -->
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Hủy bỏ</a>
+    </form>
+</div>

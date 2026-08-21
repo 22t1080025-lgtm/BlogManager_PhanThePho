@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Thực hành Lab";
+}
+
+<h1>Kết quả Thực hành LINQ</h1>
+
+<hr />
+
+<h3>1. Danh sách bài viết đã xuất bản (Xếp theo lượt xem giảm dần)</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Lượt xem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in ViewBag.BaiDaXuatBan)
+        {
+            <tr>
+                <td>@post.Id</td>
+                <td>@post.Title</td>
+                <td>@post.Author</td>
+                <td>@post.ViewCount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h3>2. Tổng số lượt xem tất cả bài viết</h3>
+<p><strong>@ViewBag.TongLuotXem</strong> lượt xem</p>
+
+<hr />
+
+<h3>3. Bài viết có nhiều lượt xem nhất</h3>
+@if (ViewBag.BaiVietXemNhieuNhat != null)
+{
+    <div class="alert alert-info">
+        <p><strong>Tiêu đề:</strong> @ViewBag.BaiVietXemNhieuNhat.Title</p>
+        <p><strong>Tác giả:</strong> @ViewBag.BaiVietXemNhieuNhat.Author</p>
+        <p><strong>Số lượt xem:</strong> @ViewBag.BaiVietXemNhieuNhat.ViewCount</p>
+    </div>
+}
