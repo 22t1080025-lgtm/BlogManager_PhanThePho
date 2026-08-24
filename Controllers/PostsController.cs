@@ -69,7 +69,7 @@ public class PostsController : Controller
         return View(post);
     }
 
-    // GET: Posts/Create
+    // GET: Posts/Create (Cần đăng nhập - thừa hưởng từ [Authorize] ở class)
     public IActionResult Create()
     {
         ViewBag.Categories = _context.Categories.ToList();
@@ -93,7 +93,7 @@ public class PostsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: Posts/Edit/5
+    // GET: Posts/Edit/5 (Cần đăng nhập - thừa hưởng từ [Authorize] ở class)
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -124,7 +124,8 @@ public class PostsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: Posts/Delete/5
+    // GET: Posts/Delete/5 (CHỈ DÀNH CHO ADMIN)
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -138,9 +139,10 @@ public class PostsController : Controller
         return View(post);
     }
 
-    // POST: Posts/Delete/5
+    // POST: Posts/Delete/5 (CHỈ DÀNH CHO ADMIN)
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var post = await _context.Posts.FindAsync(id);

@@ -13,12 +13,21 @@
             <input type="hidden" asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+            @* 1. Trường Title (Tiêu đề) *@
             <div class="mb-3">
                 <label asp-for="Title" class="form-label font-weight-bold">Tiêu đề</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
+            @* 2. Trường Content (Nội dung) *@
+            <div class="mb-3">
+                <label asp-for="Content" class="form-label font-weight-bold">Nội dung</label>
+                <textarea asp-for="Content" class="form-control" rows="6" placeholder="Nhập nội dung bài viết..."></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            @* 3. Trường Category (Chuyên mục) *@
             <div class="mb-3">
                 <label asp-for="CategoryId" class="form-label font-weight-bold">Chuyên mục</label>
                 <select asp-for="CategoryId" 
@@ -29,12 +38,14 @@
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
 
+            @* 4. Trường Author (Tác giả) *@
             <div class="mb-3">
                 <label asp-for="Author" class="form-label font-weight-bold">Tác giả</label>
                 <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
 
+            @* 5. Trường PublishedAt (Ngày đăng) *@
             <div class="mb-3">
                 <label asp-for="PublishedAt" class="form-label font-weight-bold">Ngày đăng</label>
                 <input asp-for="PublishedAt" type="datetime-local" class="form-control" />

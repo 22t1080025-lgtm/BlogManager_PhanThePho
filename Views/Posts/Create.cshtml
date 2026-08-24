@@ -10,7 +10,6 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Create" method="post">
-            @* Hiển thị tổng hợp các lỗi Validation cấp Model *@
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
             @* 1. Trường Title (Tiêu đề) *@
@@ -20,7 +19,14 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            @* 2. Trường Category (Chuyên mục) *@
+            @* 2. Trường Content (Nội dung) *@
+            <div class="mb-3">
+                <label asp-for="Content" class="form-label font-weight-bold">Nội dung</label>
+                <textarea asp-for="Content" class="form-control" rows="6" placeholder="Nhập nội dung bài viết..."></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            @* 3. Trường Category (Chuyên mục) *@
             <div class="mb-3">
                 <label asp-for="CategoryId" class="form-label font-weight-bold">Chuyên mục</label>
                 <select asp-for="CategoryId" 
@@ -31,21 +37,20 @@
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
 
-            @* 3. Trường Author (Tác giả) *@
+            @* 4. Trường Author (Tác giả) *@
             <div class="mb-3">
                 <label asp-for="Author" class="form-label font-weight-bold">Tác giả</label>
                 <input asp-for="Author" class="form-control" placeholder="Nhập tên tác giả..." />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
 
-            @* 4. Trường PublishedAt (Ngày đăng) *@
+            @* 5. Trường PublishedAt (Ngày đăng) *@
             <div class="mb-3">
                 <label asp-for="PublishedAt" class="form-label font-weight-bold">Ngày đăng</label>
                 <input asp-for="PublishedAt" type="datetime-local" class="form-control" />
                 <span asp-validation-for="PublishedAt" class="text-danger"></span>
             </div>
 
-            @* Nút Submit *@
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary">Lưu bài viết</button>
                 <a asp-action="Index" class="btn btn-secondary ms-2">Hủy bỏ</a>
@@ -54,7 +59,6 @@
     </div>
 </div>
 
-@* Bật Validation ở Client-side bằng Partial Script *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BlogManager_PhanThePho.Data;
 using BlogManager_PhanThePho.Models;
@@ -99,6 +100,7 @@ public class PostsApiController : ControllerBase
 
     // DELETE: api/posts/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeletePost(int id)
     {
         var post = await _context.Posts.FindAsync(id);
