@@ -38,15 +38,15 @@ public static class DbSeeder
         
         var defaultUser = new IdentityUser
         {
-            UserName = "admin@gmail.com",
-            Email = "admin@gmail.com",
+            UserName = "phanthepho@gmail.com",
+            Email = "phanthepho@gmail.com",
             EmailConfirmed = true
         };
 
         var user = await userManager.FindByEmailAsync(defaultUser.Email);
         if (user == null)
         {
-            await userManager.CreateAsync(defaultUser, "Admin@123");
+            await userManager.CreateAsync(defaultUser, "pho123");
             user = await userManager.FindByEmailAsync(defaultUser.Email);
         }
 

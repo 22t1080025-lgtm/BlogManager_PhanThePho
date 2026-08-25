@@ -94,6 +94,7 @@ public class PostsController : Controller
     }
 
     // GET: Posts/Edit/5 (Cần đăng nhập - thừa hưởng từ [Authorize] ở class)
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -109,6 +110,7 @@ public class PostsController : Controller
     // POST: Posts/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(int id, Post post)
     {
         if (id != post.Id) return NotFound();
